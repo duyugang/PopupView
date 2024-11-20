@@ -137,11 +137,11 @@ public struct Popup<PopupContent: View>: ViewModifier {
         /// If nil - never hides on its own
         var autohideIn: Double?
 
-        /// Should allow dismiss by dragging - default is `true`
-        var dragToDismiss: Bool = true
+        /// Should allow dismiss by dragging - default is `false`
+        var dragToDismiss: Bool = false
 
-        /// Should close on tap - default is `true`
-        var closeOnTap: Bool = true
+        /// Should close on tap - default is `false`
+        var closeOnTap: Bool = false
 
         /// Should close on tap outside - default is `false`
         var closeOnTapOutside: Bool = false
