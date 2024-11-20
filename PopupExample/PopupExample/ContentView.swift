@@ -129,7 +129,7 @@ struct ContentView : View {
                 $0
                     .type(.floater())
                     .position(.bottomLeading)
-                    .appearFrom(.bottom)
+                    .appearFrom(.bottomSlide)
                     .animation(.spring())
             }
 
@@ -154,7 +154,7 @@ struct ContentView : View {
         // MARK: - Designed floats small screen
 
             .popup(isPresented: $floatsSmall.showingTopFirst) {
-                FloatTopFirst(isShowing: $floatsSmall.showingTopFirst)
+                FloatTopFirst()
             } customize: {
                 $0
                     .type(.floater())
@@ -187,7 +187,6 @@ struct ContentView : View {
                     .type(.floater())
                     .position(.bottom)
                     .animation(.spring())
-                    .autohideIn(2)
             }
 
             .popup(isPresented: $floatsSmall.showingBottomSecond) {
@@ -197,7 +196,6 @@ struct ContentView : View {
                     .type(.floater())
                     .position(.bottom)
                     .animation(.spring())
-                    .autohideIn(5)
             }
 
         // MARK: - Designed toasts
@@ -240,11 +238,10 @@ struct ContentView : View {
         // MARK: - Designed popups
 
             .popup(item: $popups.middleItem) { item in
-                PopupMiddle(item: item) {
-                    popups.middleItem = nil
-                }
+                PopupMiddle(item: item)
             } customize: {
                 $0
+                    .appearFrom(.centerScale)
                     .closeOnTap(false)
                     .backgroundColor(.black.opacity(0.4))
             }
@@ -254,6 +251,7 @@ struct ContentView : View {
             } customize: {
                 $0
                     .type(.floater())
+                    .disappearTo(.centerScale)
                     .position(.bottom)
                     .closeOnTap(false)
                     .backgroundColor(.black.opacity(0.4))
@@ -265,6 +263,7 @@ struct ContentView : View {
                 $0
                     .type(.floater(verticalPadding: 0, useSafeAreaInset: false))
                     .position(.bottom)
+                    .closeOnTap(true)
                     .closeOnTapOutside(true)
                     .backgroundColor(.black.opacity(0.4))
             }
@@ -284,11 +283,13 @@ struct ContentView : View {
                 ActionSheetSecond()
             } customize: {
                 $0
-                    .type(.toast)
+                    .type(.scroll(headerView: AnyView(scrollViewHeader())))
                     .position(.bottom)
                     .closeOnTap(false)
+                    .closeOnTapOutside(true)
                     .backgroundColor(.black.opacity(0.4))
             }
+
 #endif
 
             .popup(isPresented: $inputSheets.showingFirst) {
@@ -321,6 +322,20 @@ struct ContentView : View {
             }
         )
     }
+
+#if os(iOS)
+    func scrollViewHeader() -> some View {
+        ZStack {
+            Color(.white).cornerRadius(40, corners: [.topLeft, .topRight])
+
+            Color.black
+                .opacity(0.2)
+                .frame(width: 30, height: 6)
+                .clipShape(Capsule())
+                .padding(.vertical, 20)
+        }
+    }
+#endif
 }
 
 struct ContentView_Previews: PreviewProvider {
